@@ -103,6 +103,18 @@ To stop running the containers:
 
 ```docker-compose down```
 
+#### Running WhisperAI in bare windows
+
+requirements
+- ffmpeg https://www.wikihow.com/Install-FFmpeg-on-Windows
+
+then
+
+```shell
+git clone https://github.com/ahmetoner/whisper-asr-webservice.git
+set ASR_MODEL=small
+poetry run uvicorn app.webservice:app --port 9000
+```
 
 ### Python Program
 

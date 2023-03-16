@@ -6,6 +6,7 @@ def speak(sentence, language_code):
     # Japanese
     if language_code == 'ja':
         speak_jp(sentence)
+        pass
 
     # French
     elif language_code == 'ko':
