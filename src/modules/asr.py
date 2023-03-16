@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 BASE_URL = getenv('WHISPER_BASE_URL')
+WHISPER_LOCAL_MODEL = getenv('WHISPER_LOCAL_MODEL', "small.en")
 WHISPER_LOCAL = bool(getenv('WHISPER_LOCAL', False))
 REQUEST_TIMEOUT = int(getenv('REQUEST_TIMEOUT'))
 SAMPLE_JP_FILEPATH = Path(__file__).resolve(
@@ -16,8 +17,10 @@ SAMPLE_EN_FILEPATH = Path(__file__).resolve(
 ).parent.parent / r'audio\samples\english_speech_sample.wav'
 
 if WHISPER_LOCAL:
-    whisper_model = whisper.load_model("base.en")
-    print(f"whisper running locally on {whisper_model.device}")
+    print(f"[WHISPER] loading up {WHISPER_LOCAL_MODEL} whisper model..")
+    whisper_model = whisper.load_model(WHISPER_LOCAL_MODEL)
+    whisper_model.transcribe(str(SAMPLE_EN_FILEPATH))
+    print(f"[WHISPER] successfully loaded! running on {whisper_model.device}")
 
 
 def transcribe(filepath):

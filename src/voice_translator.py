@@ -110,6 +110,7 @@ def on_release_key(_):
         return
 
     if eng_speech:
+        logger.info(f'English: {eng_speech}')
 
         if USE_DEEPL:
             jp_speech = translator.translate_text(
@@ -119,10 +120,7 @@ def on_release_key(_):
             #     eng_speech, dest=TARGET_LANGUAGE).text
             jp_speech = argostranslate.translate.translate(eng_speech, from_code, to_code)
 
-        if LOGGING:
-            logger.info(f'English: {eng_speech}')
-            logger.info(f'Japanese: {jp_speech}')
-
+        logger.info(f'Japanese: {jp_speech}')
         logger.debug(f"translated | took {time.time() - start}")
 
         # speak(jp_speech, TARGET_LANGUAGE)
