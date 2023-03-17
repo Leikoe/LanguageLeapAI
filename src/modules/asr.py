@@ -1,16 +1,12 @@
 from os import getenv
 from pathlib import Path
-
-import requests
 import whisper
 from dotenv import load_dotenv
 
 load_dotenv()
 
-BASE_URL = getenv('WHISPER_BASE_URL')
 WHISPER_LOCAL_MODEL = getenv('WHISPER_LOCAL_MODEL', "small.en")
 WHISPER_LOCAL = bool(getenv('WHISPER_LOCAL', False))
-REQUEST_TIMEOUT = int(getenv('REQUEST_TIMEOUT'))
 SAMPLE_JP_FILEPATH = Path(__file__).resolve(
 ).parent.parent / r'audio\samples\japanese_speech_sample.wav'
 SAMPLE_EN_FILEPATH = Path(__file__).resolve(
@@ -23,7 +19,7 @@ print(f"[WHISPER] successfully loaded! running on {whisper_model.device}")
 
 
 def transcribe(filepath, language):
-    return whisper_model.transcribe(filepath, language=language)["text"]
+    return whisper_model.transcribe(filepath, language=language, word_timestamps=True)
 
 if __name__ == '__main__':
     # test if whisper is up and running
