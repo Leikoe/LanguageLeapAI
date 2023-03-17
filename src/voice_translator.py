@@ -12,7 +12,9 @@ import time
 
 load_dotenv()
 
-if bool(getenv('WHISPER_PROBABILITY')):
+
+WHISPER_PROBABILITY = bool(getenv('WHISPER_PROBABILITY', False))
+if WHISPER_PROBABILITY:
     from sty import fg, bg, ef, rs, Style, RgbFg
 
 # LOGGING STUFF
@@ -70,7 +72,7 @@ def on_release_key(key):
 
 
 if __name__ == '__main__':
-    logger.info("now running")
+    logger.info(f"now running, translating to {TARGET_LANGUAGE}")
     p = pyaudio.PyAudio()
 
     # get channels and sampling rate of mic
@@ -130,11 +132,13 @@ if __name__ == '__main__':
 
                 # transcribe audio
                 speech = transcribe(MIC_AUDIO_PATH, TARGET_LANGUAGE)
-                for segment in speech["segments"]:
-                    for word in segment["words"]:
-                        probability = word["probability"]
-                        word = word["word"]
-                        print(fg(probability*255, 100, 100) + word)
+                if WHISPER_PROBABILITY:
+                    for segment in speech["segments"]:
+                        for word in segment["words"]:
+                            probability = word["probability"]
+                            word = word["word"]
+                            print(fg(int(probability*255), 100, 100) + word + fg.rs, end="")
+                    print("")
 
                 if speech:
                     logger.info(f'Japanese: {speech}')
