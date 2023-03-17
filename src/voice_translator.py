@@ -18,7 +18,7 @@ if bool(getenv('WHISPER_PROBABILITY')):
 # LOGGING STUFF
 import logging
 logger = logging.getLogger(__name__)
-logger.setLevel(getenv('LOG'))
+logger.setLevel(getenv('LOG', logging.DEBUG))
 # create console handler and set level to debug
 ch = logging.StreamHandler()
 ch.setLevel(logging.DEBUG)
