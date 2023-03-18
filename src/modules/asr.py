@@ -19,7 +19,7 @@ print(f"[WHISPER] successfully loaded! running on {whisper_model.device}")
 
 
 def transcribe(filepath, language):
-    return whisper_model.transcribe(filepath, language=language, word_timestamps=True)
+    return whisper_model.transcribe(filepath, language=language)
 
 if __name__ == '__main__':
     # test if whisper is up and running

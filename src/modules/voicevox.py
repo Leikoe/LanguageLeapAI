@@ -9,6 +9,9 @@ import soundfile as sf
 from dotenv import load_dotenv
 import keyboard
 
+import voicevox_core
+from voicevox_core import AccelerationMode, AudioQuery, VoicevoxCore
+
 load_dotenv()
 
 # Audio devices
@@ -47,27 +50,39 @@ def play_voice(device_id):
 
 def speak_jp(sentence):
     # generate initial query
-    params_encoded = urlencode({'text': sentence, 'speaker': VOICE_ID})
-    r = requests.post(f'{BASE_URL}/audio_query?{params_encoded}')
+    # params_encoded = urlencode({'text': sentence, 'speaker': VOICE_ID})
+    # r = requests.post(f'{BASE_URL}/audio_query?{params_encoded}')
+    #
+    # if r.status_code == 404:
+    #     print('Unable to reach Voicevox, ensure that it is running, or the VOICEVOX_BASE_URL variable is set correctly')
+    #     return
+    #
+    # voicevox_query = r.json()
+    # voicevox_query['speedScale'] = SPEED_SCALE
+    # voicevox_query['volumeScale'] = VOLUME_SCALE
+    # voicevox_query['intonationScale'] = INTONATION_SCALE
+    # voicevox_query['prePhonemeLength'] = PRE_PHONEME_LENGTH
+    # voicevox_query['postPhonemeLength'] = POST_PHONEME_LENGTH
+    #
+    # # synthesize voice as wav file
+    # params_encoded = urlencode({'speaker': VOICE_ID})
+    # r = requests.post(
+    #     f'{BASE_URL}/synthesis?{params_encoded}', json=voicevox_query)
+    #
+    # with open(VOICEVOX_WAV_PATH, 'wb') as outfile:
+    #     outfile.write(r.content)
 
-    if r.status_code == 404:
-        print('Unable to reach Voicevox, ensure that it is running, or the VOICEVOX_BASE_URL variable is set correctly')
-        return
+    print("HAAAAAAA")
 
-    voicevox_query = r.json()
-    voicevox_query['speedScale'] = SPEED_SCALE
-    voicevox_query['volumeScale'] = VOLUME_SCALE
-    voicevox_query['intonationScale'] = INTONATION_SCALE
-    voicevox_query['prePhonemeLength'] = PRE_PHONEME_LENGTH
-    voicevox_query['postPhonemeLength'] = POST_PHONEME_LENGTH
+    core = VoicevoxCore(
+        acceleration_mode="CPU", open_jtalk_dict_dir="C:\\open_jtalk_dic_utf_8-1.11"
+    )
 
-    # synthesize voice as wav file
-    params_encoded = urlencode({'speaker': VOICE_ID})
-    r = requests.post(
-        f'{BASE_URL}/synthesis?{params_encoded}', json=voicevox_query)
+    core.load_model(VOICE_ID)
+    audio_query = core.audio_query(sentence, VOICE_ID)
+    wav = core.synthesis(audio_query, VOICE_ID)
 
-    with open(VOICEVOX_WAV_PATH, 'wb') as outfile:
-        outfile.write(r.content)
+    VOICEVOX_WAV_PATH.write_bytes(wav)
 
     # play voice to app mic input and speakers/headphones
     threads = [

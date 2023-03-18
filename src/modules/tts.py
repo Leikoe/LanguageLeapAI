@@ -4,7 +4,7 @@ from .voicevox import speak_jp
 # Text-to-Speech, feel free to add your own function or add more languages
 def speak(sentence, language_code):
     # Japanese
-    if language_code == 'ja':
+    if language_code == 'Japanese':
         speak_jp(sentence)
         pass
 

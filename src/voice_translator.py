@@ -58,7 +58,8 @@ def on_press_key(key):
         if key.char == RECORD_KEY:
             recording = True
     except AttributeError:
-        logger.error(f"special key pressed: {key}")
+        # logger.error(f"special key pressed: {key}")
+        pass
 
 
 def on_release_key(key):
@@ -67,7 +68,8 @@ def on_release_key(key):
         if key.char == RECORD_KEY:
             recording = False
     except AttributeError:
-        logger.error(f"special key pressed: {key}")
+        # logger.error(f"special key pressed: {key}")
+        pass
 
 
 
@@ -95,7 +97,7 @@ if __name__ == '__main__':
     try:
         while True:
             if not recording_last and recording:
-                logger.debug("starting recording..")
+                logger.info("starting recording..")
                 frames = []
                 stream = p.open(format=FORMAT,
                                 channels=MIC_CHANNELS,
@@ -109,7 +111,7 @@ if __name__ == '__main__':
                 frames.append(data)
 
             if recording_last and not recording:
-                logger.debug("ending recording")
+                logger.info("ending recording")
                 start = time.time()
                 if stream is not None:
                     stream.stop_stream()
@@ -132,18 +134,20 @@ if __name__ == '__main__':
 
                 # transcribe audio
                 speech = transcribe(MIC_AUDIO_PATH, TARGET_LANGUAGE)
-                if WHISPER_PROBABILITY:
-                    for segment in speech["segments"]:
-                        for word in segment["words"]:
-                            probability = word["probability"]
-                            word = word["word"]
-                            print(fg(int(probability*255), 100, 100) + word + fg.rs, end="")
-                    print("")
+                speech_text = speech["text"]
 
                 if speech:
-                    logger.info(f'Japanese: {speech}')
+                    if WHISPER_PROBABILITY:
+                        for segment in speech["segments"]:
+                            for word in segment["words"]:
+                                probability = word["probability"]
+                                word = word["word"]
+                                print(fg(int((1-probability)*255), int(probability*255), 100) + word + fg.rs, end="")
+                        print("")
+                    else:
+                        logger.info(f'Japanese: {speech_text}')
                     logger.debug(f"transcript + translate | took {time.time() - start}")
-                    # speak(speech, TARGET_LANGUAGE)
+                    # speak(speech_text, TARGET_LANGUAGE)
 
                 else:
                     logger.error('No speech detected.')
