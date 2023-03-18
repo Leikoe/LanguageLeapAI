@@ -1,8 +1,12 @@
+import time
+import wave
 from os import getenv
 from pathlib import Path
 from threading import Thread
 from urllib.parse import urlencode
 
+import numpy as np
+import pyaudio
 import requests
 import sounddevice as sd
 import soundfile as sf
@@ -22,6 +26,7 @@ APP_INPUT_ID = int(getenv('CABLE_INPUT_ID'))
 INGAME_PUSH_TO_TALK_KEY = getenv('INGAME_PUSH_TO_TALK_KEY')
 
 # Voicevox settings
+OPEN_JTALK_DICT_DIR = getenv('OPEN_JTALK_DICT_DIR')
 BASE_URL = getenv('VOICEVOX_BASE_URL')
 VOICE_ID = int(getenv('VOICE_ID'))
 SPEED_SCALE = float(getenv('SPEED_SCALE'))
@@ -35,8 +40,6 @@ VOICEVOX_WAV_PATH = Path(__file__).resolve(
 
 def play_voice(device_id):
     data, fs = sf.read(VOICEVOX_WAV_PATH, dtype='float32')
-    print(f"data shape: {data.shape}")
-    print(fs)
 
     if INGAME_PUSH_TO_TALK_KEY:
         keyboard.press(INGAME_PUSH_TO_TALK_KEY)
@@ -49,15 +52,19 @@ def play_voice(device_id):
 
 
 core = VoicevoxCore(
-    acceleration_mode="CPU", open_jtalk_dict_dir="C:\\open_jtalk_dic_utf_8-1.11", cpu_num_threads=1
+    acceleration_mode="CPU", open_jtalk_dict_dir=OPEN_JTALK_DICT_DIR, load_all_models=True
 )
 
 core.load_model(VOICE_ID)
 
-def speak_jp(sentence: str):
-    # generate initial query
+def speak_jp(sentence: str, p):
+    # start = time.time()
+    # print(f"[voicevox] sending post /audio_query | elapsed: {time.time() - start}")
+    #
+    # # generate initial query
     # params_encoded = urlencode({'text': sentence, 'speaker': VOICE_ID})
     # r = requests.post(f'{BASE_URL}/audio_query?{params_encoded}')
+    # print(f"[voicevox] received post /audio_query | elapsed: {time.time() - start}")
     #
     # if r.status_code == 404:
     #     print('Unable to reach Voicevox, ensure that it is running, or the VOICEVOX_BASE_URL variable is set correctly')
@@ -74,14 +81,15 @@ def speak_jp(sentence: str):
     # params_encoded = urlencode({'speaker': VOICE_ID})
     # r = requests.post(
     #     f'{BASE_URL}/synthesis?{params_encoded}', json=voicevox_query)
+    # print(f"[voicevox] received post /synthesis | elapsed: {time.time() - start}")
     #
     # with open(VOICEVOX_WAV_PATH, 'wb') as outfile:
     #     outfile.write(r.content)
 
     print("HAAAAAAA")
     audio_query = core.audio_query(sentence, VOICE_ID)
+    audio_query.output_stereo = True
     wav = core.synthesis(audio_query, VOICE_ID)
-
     VOICEVOX_WAV_PATH.write_bytes(wav)
 
     play_voice(SPEAKERS_INPUT_ID)

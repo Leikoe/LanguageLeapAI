@@ -134,7 +134,7 @@ if __name__ == '__main__':
                     logger.info(f"translation: {translated}")
                     logger.debug(f"translate | took {time.time() - start}")
                     # text to speech (text -> audio)
-                    speak(translated, TARGET_LANGUAGE_CODE)
+                    speak(translated, TARGET_LANGUAGE_CODE, p)
                     logger.debug(f"tts | took {time.time() - start}")
 
                 else:

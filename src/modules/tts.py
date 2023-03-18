@@ -2,10 +2,10 @@ from .voicevox import speak_jp
 
 
 # Text-to-Speech, feel free to add your own function or add more languages
-def speak(sentence, language_code):
+def speak(sentence, language_code, p):
     # Japanese
     if language_code == 'ja':
-        speak_jp(sentence)
+        speak_jp(sentence, p)
         pass
 
     # French
