@@ -48,7 +48,13 @@ def play_voice(device_id):
         keyboard.release(INGAME_PUSH_TO_TALK_KEY)
 
 
-def speak_jp(sentence):
+core = VoicevoxCore(
+    acceleration_mode="CPU", open_jtalk_dict_dir="C:\\open_jtalk_dic_utf_8-1.11", cpu_num_threads=1
+)
+
+core.load_model(VOICE_ID)
+
+def speak_jp(sentence: str):
     # generate initial query
     # params_encoded = urlencode({'text': sentence, 'speaker': VOICE_ID})
     # r = requests.post(f'{BASE_URL}/audio_query?{params_encoded}')
@@ -73,24 +79,20 @@ def speak_jp(sentence):
     #     outfile.write(r.content)
 
     print("HAAAAAAA")
-
-    core = VoicevoxCore(
-        acceleration_mode="CPU", open_jtalk_dict_dir="C:\\open_jtalk_dic_utf_8-1.11"
-    )
-
-    core.load_model(VOICE_ID)
     audio_query = core.audio_query(sentence, VOICE_ID)
     wav = core.synthesis(audio_query, VOICE_ID)
 
     VOICEVOX_WAV_PATH.write_bytes(wav)
 
-    # play voice to app mic input and speakers/headphones
-    threads = [
-        # Thread(target=play_voice, args=[APP_INPUT_ID]),
-        Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])
-    ]
-    [t.start() for t in threads]
-    [t.join() for t in threads]
+    play_voice(SPEAKERS_INPUT_ID)
+
+    # # play voice to app mic input and speakers/headphones
+    # threads = [
+    #     # Thread(target=play_voice, args=[APP_INPUT_ID]),
+    #     Thread(target=play_voice, args=[SPEAKERS_INPUT_ID])
+    # ]
+    # [t.start() for t in threads]
+    # [t.join() for t in threads]
 
 
 if __name__ == '__main__':

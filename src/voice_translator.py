@@ -9,7 +9,7 @@ import time
 
 from modules.asr import transcribe
 from modules.translation import translate
-# from modules.tts import speak
+from modules.tts import speak
 
 load_dotenv()
 
@@ -124,6 +124,7 @@ if __name__ == '__main__':
 
                 # transcribe (audio -> text)
                 transcribed = transcribe(MIC_AUDIO_PATH)
+                logger.debug(f"transcribe | took {time.time() - start}")
                 from_code = transcribed["language"]
                 speech = transcribed["text"]
                 if speech:
@@ -131,9 +132,10 @@ if __name__ == '__main__':
                     # translate (text -> text)
                     translated = translate(speech, from_code, TARGET_LANGUAGE_CODE)
                     logger.info(f"translation: {translated}")
-                    logger.debug(f"transcript + translate | took {time.time() - start}")
+                    logger.debug(f"translate | took {time.time() - start}")
                     # text to speech (text -> audio)
-                    # speak(speech_text, TARGET_LANGUAGE)
+                    speak(translated, TARGET_LANGUAGE_CODE)
+                    logger.debug(f"tts | took {time.time() - start}")
 
                 else:
                     logger.error('No speech detected.')
