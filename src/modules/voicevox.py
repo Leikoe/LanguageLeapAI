@@ -12,8 +12,7 @@ import sounddevice as sd
 import soundfile as sf
 from dotenv import load_dotenv
 import keyboard
-
-import voicevox_core
+from .logger import logger
 from voicevox_core import AccelerationMode, AudioQuery, VoicevoxCore
 
 load_dotenv()
@@ -38,27 +37,31 @@ VOICEVOX_WAV_PATH = Path(__file__).resolve(
 ).parent.parent / r'audio\voicevox.wav'
 
 
+print(f"[VOICEVOX] loading up voicevox core..")
+core = VoicevoxCore(
+    acceleration_mode="CPU", open_jtalk_dict_dir=OPEN_JTALK_DICT_DIR
+)
+core.load_model(VOICE_ID)
+print(f"[VOICEVOX] successfully loaded! running on {'gpu' if core.is_gpu_mode else 'cpu'}")
+
+
 def play_voice(device_id):
     data, fs = sf.read(VOICEVOX_WAV_PATH, dtype='float32')
 
     if INGAME_PUSH_TO_TALK_KEY:
         keyboard.press(INGAME_PUSH_TO_TALK_KEY)
 
-    sd.play(data, fs, device=device_id, blocking=False)
+    logger.info("speaking now..")
+    sd.play(data, fs, device=device_id, blocking=True)
     # sd.wait()
+    logger.info("finished speaking")
 
     if INGAME_PUSH_TO_TALK_KEY:
         keyboard.release(INGAME_PUSH_TO_TALK_KEY)
 
 
-core = VoicevoxCore(
-    acceleration_mode="CPU", open_jtalk_dict_dir=OPEN_JTALK_DICT_DIR, load_all_models=True
-)
-
-core.load_model(VOICE_ID)
-
-def speak_jp(sentence: str, p):
-    # start = time.time()
+def speak_jp(sentence: str):
+    start = time.time()
     # print(f"[voicevox] sending post /audio_query | elapsed: {time.time() - start}")
     #
     # # generate initial query
@@ -86,11 +89,17 @@ def speak_jp(sentence: str, p):
     # with open(VOICEVOX_WAV_PATH, 'wb') as outfile:
     #     outfile.write(r.content)
 
-    print("HAAAAAAA")
+    logger.debug("querying voicevox")
     audio_query = core.audio_query(sentence, VOICE_ID)
     audio_query.output_stereo = True
+    logger.debug(f"querying took: {time.time() - start}")
+
+    logger.debug("synthesis starting")
     wav = core.synthesis(audio_query, VOICE_ID)
+    logger.debug(f"synthesis took: {time.time() - start}")
+
     VOICEVOX_WAV_PATH.write_bytes(wav)
+    logger.debug(f"wrote to wav file took: {time.time() - start}")
 
     play_voice(SPEAKERS_INPUT_ID)
 

@@ -8,7 +8,7 @@ from time import sleep
 import requests
 import speech_recognition as sr
 
-from .asr import translate
+from .transcription import translate
 
 APP_OUTPUT_ID = int(getenv('AUX_OUTPUT_ID'))
 RECORD_TIMEOUT = int(getenv('RECORD_TIMEOUT'))
