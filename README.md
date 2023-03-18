@@ -85,30 +85,19 @@ Setting up **LanguageLeapAI** requires 3 crucial steps, so don't miss out on any
 
 To run **LanguageLeapAI**, you need to first run WhisperAI and Voicevox. They can either be run via Docker or using Google Colab.
 
-### Google Colab
-
-If your GPU is not powerful enough, you may want to consider running WhisperAI and Voicevox using Google Colab's GPU.
-
-Upload [run_whisper_colab.ipynb](src/run_whisper_colab.ipynb) and [run_voicevox_colab.ipynb](src/run_voicevox_colab.ipynb) files to Google drive, open the notebook with Google Colab and simply follow the instructions!
-
-### Docker
-
-If you still want to run both Whisper and Voicevox on your computer, run these commands in the root folder containing the [docker-compose.yml](docker-compose.yml) file.
-
-To run both WhisperAI and Voicevox:
-
-```docker-compose up -d```
-
-To stop running the containers:
-
-```docker-compose down```
-
 #### Running WhisperAI in bare windows
 
 requirements
-- ffmpeg https://www.wikihow.com/Install-FFmpeg-on-Windows
-
-then
+- [ffmpeg](https://www.wikihow.com/Install-FFmpeg-on-Windows)
+- [onnxruntime](https://github.com/microsoft/onnxruntime/releases)
+  - get the right version for your os from github releases 
+  - copy onnxruntime.dll and onnruntime_providers_shared.dll in the modules/ folder
+- [voicevox](https://github.com/VOICEVOX/voicevox_core/releases)
+  - copy the right .whl link
+  - pip install <link> 
+  - example: `pip install https://github.com/VOICEVOX/voicevox_core/releases/download/0.14.2/voicevox_core-0.14.2+cuda-cp38-abi3-win_amd64.whl`
+- [open_jtalk_dict](https://sourceforge.net/projects/open-jtalk/files/Open%20JTalk/open_jtalk-1.11/open_jtalk-1.11.tar.gz/download)
+  - put the extracted folder path in OPEN_JTALK_DICT_DIR in .env
 
 ```shell
 git clone https://github.com/ahmetoner/whisper-asr-webservice.git
