@@ -1,24 +1,19 @@
 import wave
 from os import getenv
-from time import sleep
 from typing import Optional
-
 from pynput import keyboard
 from dotenv import load_dotenv
-import asyncio
+import logging
 import pyaudio
 import time
 
+from modules.asr import transcribe
+from modules.translation import translate
+# from modules.tts import speak
 
 load_dotenv()
 
-
-WHISPER_PROBABILITY = bool(getenv('WHISPER_PROBABILITY', False))
-if WHISPER_PROBABILITY:
-    from sty import fg, bg, ef, rs, Style, RgbFg
-
 # LOGGING STUFF
-import logging
 logger = logging.getLogger(__name__)
 logger.setLevel(getenv('LOG', logging.DEBUG))
 # create console handler and set level to debug
@@ -38,11 +33,7 @@ logger.info("loading")
 # END LOGGING STUFF
 
 
-from modules.asr import transcribe
-# from modules.tts import speak
-
-
-TARGET_LANGUAGE = getenv('TARGET_LANGUAGE')
+TARGET_LANGUAGE_CODE = getenv('TARGET_LANGUAGE_CODE')
 MIC_ID = int(getenv('MICROPHONE_ID'))
 RECORD_KEY = getenv('MIC_RECORD_KEY')
 MIC_AUDIO_PATH = r'audio/mic.wav'
@@ -72,9 +63,8 @@ def on_release_key(key):
         pass
 
 
-
 if __name__ == '__main__':
-    logger.info(f"now running, translating to {TARGET_LANGUAGE}")
+    logger.info(f"now running, translating to {TARGET_LANGUAGE_CODE}")
     p = pyaudio.PyAudio()
 
     # get channels and sampling rate of mic
@@ -132,21 +122,17 @@ if __name__ == '__main__':
                 wf.close()
                 logger.debug(f"wrote audio file to os | took {time.time() - start}")
 
-                # transcribe audio
-                speech = transcribe(MIC_AUDIO_PATH, TARGET_LANGUAGE)
-                speech_text = speech["text"]
-
+                # transcribe (audio -> text)
+                transcribed = transcribe(MIC_AUDIO_PATH)
+                from_code = transcribed["language"]
+                speech = transcribed["text"]
                 if speech:
-                    if WHISPER_PROBABILITY:
-                        for segment in speech["segments"]:
-                            for word in segment["words"]:
-                                probability = word["probability"]
-                                word = word["word"]
-                                print(fg(int((1-probability)*255), int(probability*255), 100) + word + fg.rs, end="")
-                        print("")
-                    else:
-                        logger.info(f'Japanese: {speech_text}')
+                    logger.info(f'transcript: {speech}')
+                    # translate (text -> text)
+                    translated = translate(speech, from_code, TARGET_LANGUAGE_CODE)
+                    logger.info(f"translation: {translated}")
                     logger.debug(f"transcript + translate | took {time.time() - start}")
+                    # text to speech (text -> audio)
                     # speak(speech_text, TARGET_LANGUAGE)
 
                 else:
