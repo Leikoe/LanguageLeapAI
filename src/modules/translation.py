@@ -59,5 +59,4 @@ def translate(text: str, from_code: str, to_code: str):
             text, dest=TARGET_LANGUAGE_CODE).text
 
     if TRANSLATION_BACKEND == TranslationBackend.ARGO:
-        print(f"{from_code=} {to_code=}")
         return argostranslate.translate.translate(text, from_code, to_code)

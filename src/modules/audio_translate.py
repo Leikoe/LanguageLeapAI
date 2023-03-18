@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from io import BytesIO
 from os import getenv
+from pathlib import Path
 from queue import Queue
 from threading import Thread
 from time import sleep
@@ -8,14 +9,15 @@ from time import sleep
 import requests
 import speech_recognition as sr
 
-from .transcription import translate
+from translation import translate
 
 APP_OUTPUT_ID = int(getenv('AUX_OUTPUT_ID'))
 RECORD_TIMEOUT = int(getenv('RECORD_TIMEOUT'))
 PHRASE_TIMEOUT = int(getenv('PHRASE_TIMEOUT'))
 INPUT_LANGUAGE = getenv('TARGET_LANGUAGE_CODE')
 LOGGING = getenv("LOGGING", 'False').lower() in ('true', '1', 't')
-APP_AUDIO_WAV_PATH = r'audio\app_audio.wav'
+APP_AUDIO_WAV_PATH = Path(__file__).resolve(
+).parent / 'audio' / r'app_audio.wav'
 
 
 def request_thread(queue, phrase_time, now):

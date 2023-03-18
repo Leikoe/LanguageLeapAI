@@ -1,5 +1,6 @@
 import wave
 from os import getenv
+from pathlib import Path
 from typing import Optional
 from pynput import keyboard
 from dotenv import load_dotenv
@@ -17,7 +18,8 @@ load_dotenv()
 TARGET_LANGUAGE_CODE = getenv('TARGET_LANGUAGE_CODE')
 MIC_ID = int(getenv('MICROPHONE_ID'))
 RECORD_KEY = getenv('MIC_RECORD_KEY')
-MIC_AUDIO_PATH = r'audio/mic.wav'
+MIC_AUDIO_PATH = Path(__file__).resolve(
+).parent / 'audio' / r'mic.wav'
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 
@@ -94,17 +96,18 @@ if __name__ == '__main__':
                     continue
 
                 # write microphone audio to file
-                wf = wave.open(MIC_AUDIO_PATH, 'wb')
+                mic_audio_path: str = str(MIC_AUDIO_PATH.resolve())
+                wf = wave.open(mic_audio_path, 'wb')
                 wf.setnchannels(MIC_CHANNELS)
                 wf.setsampwidth(p.get_sample_size(FORMAT))
                 wf.setframerate(MIC_SAMPLING_RATE)
                 wf.writeframes(b''.join(frames))
                 wf.close()
-                logger.debug(f"wrote audio file to os | took {time.time() - start}")
+                logger.debug(f"wrote audio file to os | total took {time.time() - start}")
 
                 # transcribe (audio -> text)
-                transcribed = transcribe(MIC_AUDIO_PATH)
-                logger.debug(f"transcribe | took {time.time() - start}")
+                transcribed = transcribe(mic_audio_path)
+                logger.debug(f"transcribe | total took {time.time() - start}")
                 from_code = transcribed["language"]
                 speech = transcribed["text"]
                 if speech:
@@ -112,10 +115,10 @@ if __name__ == '__main__':
                     # translate (text -> text)
                     translated = translate(speech, from_code, TARGET_LANGUAGE_CODE)
                     logger.info(f"translation: {translated}")
-                    logger.debug(f"translate | took {time.time() - start}")
+                    logger.debug(f"translate | total took {time.time() - start}")
                     # text to speech (text -> audio)
                     speak(translated, TARGET_LANGUAGE_CODE)
-                    logger.debug(f"tts | took {time.time() - start}")
+                    logger.debug(f"tts | total took {time.time() - start}")
                     print("")
 
                 else:

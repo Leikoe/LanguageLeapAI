@@ -5,7 +5,7 @@ from pathlib import Path
 import sounddevice as sd
 import soundfile as sf
 from dotenv import load_dotenv
-import keyboard
+from pynput.keyboard import Key, Controller
 from .logger import logger
 from voicevox_core import AccelerationMode, AudioQuery, VoicevoxCore
 
@@ -13,10 +13,10 @@ load_dotenv()
 
 # Audio devices
 SPEAKERS_INPUT_ID = int(getenv('VOICEMEETER_INPUT_ID'))
-APP_INPUT_ID = int(getenv('CABLE_INPUT_ID'))
 
 # Keyboard
 INGAME_PUSH_TO_TALK_KEY = getenv('INGAME_PUSH_TO_TALK_KEY')
+keyboard = Controller()
 
 # Voicevox settings
 OPEN_JTALK_DICT_DIR = getenv('OPEN_JTALK_DICT_DIR')
@@ -28,7 +28,7 @@ INTONATION_SCALE = float(getenv('INTONATION_SCALE'))
 PRE_PHONEME_LENGTH = float(getenv('PRE_PHONEME_LENGTH'))
 POST_PHONEME_LENGTH = float(getenv('POST_PHONEME_LENGTH'))
 VOICEVOX_WAV_PATH = Path(__file__).resolve(
-).parent.parent / r'audio\voicevox.wav'
+).parent.parent / 'audio' / r'voicevox.wav'
 
 
 print(f"[VOICEVOX] loading up voicevox core..")

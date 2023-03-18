@@ -13,12 +13,12 @@ SAMPLE_EN_FILEPATH = Path(__file__).resolve(
 
 print(f"[WHISPER] loading up {WHISPER_MODEL} whisper model..")
 whisper_model = whisper.load_model(WHISPER_MODEL)
-whisper_model.transcribe(str(SAMPLE_EN_FILEPATH))
+whisper_model.transcribe(str(SAMPLE_EN_FILEPATH), fp16=False if whisper_model.device == 'cpu' else None)
 print(f"[WHISPER] successfully loaded! running on {whisper_model.device}")
 
 
 def transcribe(filepath):
-    return whisper_model.transcribe(filepath)
+    return whisper_model.transcribe(filepath, fp16=False if whisper_model.device == 'cpu' else None)
 
 
 if __name__ == '__main__':
