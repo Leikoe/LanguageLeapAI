@@ -4,9 +4,6 @@ import logging
 
 load_dotenv()
 
-# logger = logging
-# logger.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=getenv('LOG', logging.DEBUG))
-
 logger = logging.getLogger(__name__)
 logger.setLevel(getenv('LOG', logging.DEBUG))
 # create console handler and set level to debug
