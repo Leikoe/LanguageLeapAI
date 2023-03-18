@@ -1,13 +1,7 @@
 import time
-import wave
 from os import getenv
 from pathlib import Path
-from threading import Thread
-from urllib.parse import urlencode
 
-import numpy as np
-import pyaudio
-import requests
 import sounddevice as sd
 import soundfile as sf
 from dotenv import load_dotenv
