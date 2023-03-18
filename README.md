@@ -92,12 +92,16 @@ requirements
 - [onnxruntime](https://github.com/microsoft/onnxruntime/releases)
   - get the right version for your os from github releases 
   - copy onnxruntime.dll and onnruntime_providers_shared.dll in the modules/ folder
+  - macOS:
+    - move the extracted folder to /usr/local/lib
+    - `sudo ln -s /usr/local/lib/onnxruntime-osx-arm64-1.13.1/lib/libonnxruntime.1.13.1.dylib /usr/local/lib/libonnxruntime.1.13.1.dylib`
 - [voicevox](https://github.com/VOICEVOX/voicevox_core/releases)
   - copy the right .whl link
   - pip install <link> 
   - example: `pip install https://github.com/VOICEVOX/voicevox_core/releases/download/0.14.2/voicevox_core-0.14.2+cuda-cp38-abi3-win_amd64.whl`
 - [open_jtalk_dict](https://sourceforge.net/projects/open-jtalk/files/Open%20JTalk/open_jtalk-1.11/open_jtalk-1.11.tar.gz/download)
   - put the extracted folder path in OPEN_JTALK_DICT_DIR in .env
+  - macOS: you can put the folder in /usr/local/<extracted_openjtalk_folder>
 
 ```shell
 git clone https://github.com/ahmetoner/whisper-asr-webservice.git
