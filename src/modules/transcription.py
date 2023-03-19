@@ -13,9 +13,7 @@ SAMPLE_EN_FILEPATH = Path(__file__).resolve(
 
 print(f"[WHISPER] loading up {WHISPER_MODEL} whisper model..")
 whisper_model = whisper.load_model(WHISPER_MODEL)
-sample_en_path = str(SAMPLE_EN_FILEPATH)
-print(f"{sample_en_path=}")
-whisper_model.transcribe(sample_en_path, fp16=False if whisper_model.device == 'cpu' else None)
+whisper_model.transcribe(str(SAMPLE_EN_FILEPATH.resolve()), fp16=False if whisper_model.device == 'cpu' else None)
 print(f"[WHISPER] successfully loaded! running on {whisper_model.device}")
 
 
@@ -28,4 +26,4 @@ if __name__ == '__main__':
     print('Testing Whisper on English speech sample.')
     print(f'Actual audio: Oh. Honestly, I could not be bothered to play this game to full completion.'
           f'The narrator is obnoxious and unfunny, with his humor and dialogue proving to be more irritating than '
-          f'entertaining.\nWhisper audio: {transcribe(SAMPLE_EN_FILEPATH)}\n')
+          f'entertaining.\nWhisper audio: {transcribe(str(SAMPLE_EN_FILEPATH.resolve()))}\n')
