@@ -13,7 +13,9 @@ SAMPLE_EN_FILEPATH = Path(__file__).resolve(
 
 print(f"[WHISPER] loading up {WHISPER_MODEL} whisper model..")
 whisper_model = whisper.load_model(WHISPER_MODEL)
-whisper_model.transcribe(str(SAMPLE_EN_FILEPATH), fp16=False if whisper_model.device == 'cpu' else None)
+sample_en_path = str(SAMPLE_EN_FILEPATH)
+print(f"{sample_en_path=}")
+whisper_model.transcribe(sample_en_path, fp16=False if whisper_model.device == 'cpu' else None)
 print(f"[WHISPER] successfully loaded! running on {whisper_model.device}")
 
 
