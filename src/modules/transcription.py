@@ -7,9 +7,9 @@ load_dotenv()
 
 WHISPER_MODEL = getenv('WHISPER_MODEL', "small.en")
 SAMPLE_JP_FILEPATH = Path(__file__).resolve(
-).parent.parent / r'audio\samples\japanese_speech_sample.wav'
+).parent.parent / r'audio' / 'samples' / 'japanese_speech_sample.wav'
 SAMPLE_EN_FILEPATH = Path(__file__).resolve(
-).parent.parent / r'audio/samples/english_speech_sample.wav'
+).parent.parent / 'audio' / 'samples' / 'english_speech_sample.wav'
 
 print(f"[WHISPER] loading up {WHISPER_MODEL} whisper model..")
 whisper_model = whisper.load_model(WHISPER_MODEL)

@@ -76,34 +76,42 @@ The user can choose to not run [subtitler.py](src/subtitler.py) and simply use [
 ## Setup
 
 Setting up **LanguageLeapAI** requires 3 crucial steps, so don't miss out on any of them!
-1. [Installing Services and Dependencies](docs/INSTALLATION.md)
-2. [Audio Routing](docs/AUDIO.md)
-3. [Writing your Environment file](docs/ENV.md)
+
+[//]: # (1. [Installing Services and Dependencies]&#40;docs/INSTALLATION.md&#41;)
+[//]: # (2. [Audio Routing]&#40;docs/AUDIO.md&#41;)
+
+[//]: # (3. [Writing your Environment file]&#40;docs/ENV.md&#41;)
+
+1. Install [python](https://www.python.org/downloads/) and make sure to click "add python to PATH" in the installer
+
+2. Install python requirements
+
+```shell
+python install -r requirements.txt
+```
+
+3. Install Voicevox requirements
+
+- [voicevox](https://github.com/VOICEVOX/voicevox_core/releases)
+  - copy the right .whl link
+  - pip install <link> 
+  - example: `pip install https://github.com/VOICEVOX/voicevox_core/releases/download/0.14.2/voicevox_core-0.14.2+cuda-cp38-abi3-win_amd64.whl`
+
+- [onnxruntime](https://github.com/microsoft/onnxruntime/releases)
+  - get the right version for your os from github releases ex: https://github.com/microsoft/onnxruntime/releases/download/v1.14.1/onnxruntime-win-x64-gpu-1.14.1.zip
+  - copy onnxruntime.dll and onnruntime_providers_shared.dll in the modules/ folder
+  - macOS:
+    - move the extracted folder to /usr/local/lib
+    - `sudo ln -s /usr/local/lib/onnxruntime-osx-arm64-1.13.1/lib/libonnxruntime.1.13.1.dylib /usr/local/lib/libonnxruntime.1.13.1.dylib`
+
+- [open_jtalk_dict](https://sourceforge.net/projects/open-jtalk/files/Open%20JTalk/open_jtalk-1.11/open_jtalk-1.11.tar.gz/download)
+  - put the extracted folder path in OPEN_JTALK_DICT_DIR in .env
+  - macOS: you can put the folder in /usr/local/<extracted_openjtalk_folder>
 
 
 ## Usage
 
 To run **LanguageLeapAI**, you need to first run WhisperAI and Voicevox. They can either be run via Docker or using Google Colab.
-
-#### Running WhisperAI in bare windows
-
-requirements
-- python (tested on 3.10)
-- [ffmpeg](https://www.wikihow.com/Install-FFmpeg-on-Windows)
-- [onnxruntime](https://github.com/microsoft/onnxruntime/releases)
-  - get the right version for your os from github releases 
-  - copy onnxruntime.dll and onnruntime_providers_shared.dll in the modules/ folder
-  - macOS:
-    - move the extracted folder to /usr/local/lib
-    - `sudo ln -s /usr/local/lib/onnxruntime-osx-arm64-1.13.1/lib/libonnxruntime.1.13.1.dylib /usr/local/lib/libonnxruntime.1.13.1.dylib`
-- [voicevox](https://github.com/VOICEVOX/voicevox_core/releases)
-  - copy the right .whl link
-  - pip install <link> 
-  - example: `pip install https://github.com/VOICEVOX/voicevox_core/releases/download/0.14.2/voicevox_core-0.14.2+cuda-cp38-abi3-win_amd64.whl`
-- [open_jtalk_dict](https://sourceforge.net/projects/open-jtalk/files/Open%20JTalk/open_jtalk-1.11/open_jtalk-1.11.tar.gz/download)
-  - put the extracted folder path in OPEN_JTALK_DICT_DIR in .env
-  - macOS: you can put the folder in /usr/local/<extracted_openjtalk_folder>
-
 
 ### Python Program
 
@@ -124,6 +132,7 @@ To stop the python scripts, simply press `Ctrl+C` in the terminal.
 
 Some important things to keep in mind while using **LanguageLeapAI**.
 
+
 #### Whisper's inconsistency
 
 Do note that WhisperAI is not exactly the most accurate and will not transcribe speech correctly 100% of the time, so use at your own risk.
@@ -132,12 +141,6 @@ Until OpenAI decides to improve the dataset that was used to train the Whisper m
 Also, Whisper is not designed to handle multiple concurrent requests at once.
 However, for subtitles to be updated in time, multiple requests are being sent asynchronously, so some requests might return an error.
 
-#### Antivirus Web Protection
-
-If you are running Whisper and Voicevox on the cloud using Google Colab, since we are using ngrok and localtunnel to host our services,
-the randomised public IP address that they provide might be blacklisted by your antivirus software. If the AI seems to stop working,
-it may be due to your antivirus blocking the connections to these public IP addresses. 
-You may whitelist these IP addresses or just turn off your antivirus web protection **at your own risk**.
 
 #### Voicevox voices
 
@@ -149,6 +152,7 @@ There are certain terms and conditions for using the voices from Voicevox, so do
 Some applications like Valorant for some reason does not allow open mic for team voice chat, so **LanguageLeapAI** will not work for in these cases,
 unless you hold down the push to talk button whenever you want your teammates to hear the Text-to-Speech.
 However, Valorant does have open mic for party voice-chat, so there should be no issue if it's used towards your party members.
+
 
 ## License
 
