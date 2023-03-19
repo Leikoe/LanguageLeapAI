@@ -110,6 +110,10 @@ python install -r requirements.txt
   - put the extracted folder path in OPEN_JTALK_DICT_DIR in .env
   - macOS: you can put the folder in /usr/local/<extracted_openjtalk_folder>
 
+5. set up your .env file
+
+- get the voicevox [speaker id](https://leikoe.github.io/LanguageLeapAI/voicevox_static.html) (only for japanese tts)
+
 
 ## Usage
 

@@ -111,7 +111,7 @@ if __name__ == '__main__':
                 from_code = transcribed["language"]
                 speech = transcribed["text"]
                 if speech:
-                    logger.info(f'transcript: {speech}')
+                    logger.info(f'transcript (detected {from_code}): {speech}')
                     # translate (text -> text)
                     translated = translate(speech, from_code, TARGET_LANGUAGE_CODE)
                     logger.info(f"translation: {translated}")
