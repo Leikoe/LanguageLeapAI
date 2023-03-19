@@ -104,11 +104,6 @@ requirements
   - put the extracted folder path in OPEN_JTALK_DICT_DIR in .env
   - macOS: you can put the folder in /usr/local/<extracted_openjtalk_folder>
 
-```shell
-git clone https://github.com/ahmetoner/whisper-asr-webservice.git
-set ASR_MODEL=small
-poetry run uvicorn app.webservice:app --port 9000
-```
 
 ### Python Program
 
