@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <div id="speakers" style="display: flex; flex-wrap: wrap;">
+
+    </div>
+
+    <script>
+        const speakersContainer = document.getElementById("speakers");
+
+        async function displaySpeaker(speaker) {
+            var res = await fetch(`http://localhost:50021/speaker_info?speaker_uuid=${speaker.speaker_uuid}`);
+            var info = await res.json(res);
+
+            const speakerCard = document.createElement("div");
+            speakerCard.innerHTML = `
+                <img src='data:image/png;base64, ${info.portrait}'/>
+            `;
+
+            for (var voice of speaker.styles) {
+                speakerCard.innerHTML += "<p>" + voice.name + " - " + voice.id + "</p>";
+            }
+
+            speakersContainer.appendChild(speakerCard);
+        }
+
+        async function displaySpeakers() {
+            var res = await fetch("http://localhost:50021/speakers");
+            var speakers = await res.json();
+
+            for (var speaker of speakers) {
+                await displaySpeaker(speaker);
+            }
+        }
+
+        async function main() {
+            await displaySpeakers();
+
+        }
+
+        main();
+    </script>
+</body>
+</html>
