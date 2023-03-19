@@ -88,6 +88,7 @@ To run **LanguageLeapAI**, you need to first run WhisperAI and Voicevox. They ca
 #### Running WhisperAI in bare windows
 
 requirements
+- python (tested on 3.10)
 - [ffmpeg](https://www.wikihow.com/Install-FFmpeg-on-Windows)
 - [onnxruntime](https://github.com/microsoft/onnxruntime/releases)
   - get the right version for your os from github releases 

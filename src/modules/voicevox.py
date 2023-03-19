@@ -1,9 +1,8 @@
 import time
-from os import getenv
-from pathlib import Path
-
 import sounddevice as sd
 import soundfile as sf
+from os import getenv
+from pathlib import Path
 from dotenv import load_dotenv
 from pynput.keyboard import Key, Controller
 from .logger import logger
