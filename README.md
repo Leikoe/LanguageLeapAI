@@ -84,15 +84,20 @@ Setting up **LanguageLeapAI** requires 3 crucial steps, so don't miss out on any
 
 1. Install [python](https://www.python.org/downloads/) and make sure to click "add python to PATH" in the installer
 
-2. Install python requirements
+2. [OPTIONAL] Install GPU support
+
+- download and install [cuda 11.7](https://developer.nvidia.com/cuda-11-7-1-download-archive?target_os=Windows&target_arch=x86_64&target_version=11&target_type=exe_local)
+- install pytorch `pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117`
+
+3. Install python requirements
 
 ```shell
 python install -r requirements.txt
 ```
 
-3. Install [ffmpeg](https://www.wikihow.com/Install-FFmpeg-on-Windows)
+4. Install [ffmpeg](https://www.wikihow.com/Install-FFmpeg-on-Windows)
 
-4. Install Voicevox requirements
+5. Install Voicevox requirements
 
 - [voicevox](https://github.com/VOICEVOX/voicevox_core/releases)
   - copy the right .whl link
@@ -110,8 +115,8 @@ python install -r requirements.txt
   - put the extracted folder path in OPEN_JTALK_DICT_DIR in .env
   - macOS: you can put the folder in /usr/local/<extracted_openjtalk_folder>
 
-5. set up your .env file
-
+6. set up your .env file
+- rename .env.sample into .env and set your values according to video or comments
 - get the voicevox [speaker id](https://leikoe.github.io/LanguageLeapAI/voicevox_static.html) (only for japanese tts)
 
 
