@@ -90,7 +90,9 @@ Setting up **LanguageLeapAI** requires 3 crucial steps, so don't miss out on any
 python install -r requirements.txt
 ```
 
-3. Install Voicevox requirements
+3. Install [ffmpeg](https://www.wikihow.com/Install-FFmpeg-on-Windows)
+
+4. Install Voicevox requirements
 
 - [voicevox](https://github.com/VOICEVOX/voicevox_core/releases)
   - copy the right .whl link
@@ -98,13 +100,13 @@ python install -r requirements.txt
   - example: `pip install https://github.com/VOICEVOX/voicevox_core/releases/download/0.14.2/voicevox_core-0.14.2+cuda-cp38-abi3-win_amd64.whl`
 
 - [onnxruntime](https://github.com/microsoft/onnxruntime/releases)
-  - get the right version for your os from github releases ex: https://github.com/microsoft/onnxruntime/releases/download/v1.14.1/onnxruntime-win-x64-gpu-1.14.1.zip
-  - copy onnxruntime.dll and onnruntime_providers_shared.dll in the modules/ folder
+  - get the right version for your os from github releases example: onnxruntime-win-x64-gpu-1.14.1.zip
+  - copy onnxruntime.dll and onnruntime_providers_shared.dll in the src/ folder
   - macOS:
     - move the extracted folder to /usr/local/lib
     - `sudo ln -s /usr/local/lib/onnxruntime-osx-arm64-1.13.1/lib/libonnxruntime.1.13.1.dylib /usr/local/lib/libonnxruntime.1.13.1.dylib`
 
-- [open_jtalk_dict](https://sourceforge.net/projects/open-jtalk/files/Open%20JTalk/open_jtalk-1.11/open_jtalk-1.11.tar.gz/download)
+- [open_jtalk_dict](https://sourceforge.net/projects/open-jtalk/files/Dictionary/open_jtalk_dic-1.11/open_jtalk_dic_utf_8-1.11.tar.gz/download)
   - put the extracted folder path in OPEN_JTALK_DICT_DIR in .env
   - macOS: you can put the folder in /usr/local/<extracted_openjtalk_folder>
 
