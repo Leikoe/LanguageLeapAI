@@ -11,7 +11,7 @@ from voicevox_core import AccelerationMode, AudioQuery, VoicevoxCore
 load_dotenv()
 
 # Audio devices
-SPEAKERS_INPUT_ID = int(getenv('VOICEMEETER_INPUT_ID'))
+CABLE_INPUT_ID = int(getenv('CABLE_INPUT_ID'))
 
 # Keyboard
 INGAME_PUSH_TO_TALK_KEY = getenv('INGAME_PUSH_TO_TALK_KEY')
@@ -26,8 +26,8 @@ VOLUME_SCALE = float(getenv('VOLUME_SCALE'))
 INTONATION_SCALE = float(getenv('INTONATION_SCALE'))
 PRE_PHONEME_LENGTH = float(getenv('PRE_PHONEME_LENGTH'))
 POST_PHONEME_LENGTH = float(getenv('POST_PHONEME_LENGTH'))
-VOICEVOX_WAV_PATH = Path(__file__).resolve(
-).parent.parent / 'audio' / r'voicevox.wav'
+TTS_WAV_PATH = Path(__file__).resolve(
+).parent.parent / 'audio' / r'tts.wav'
 
 
 print(f"[VOICEVOX] loading up voicevox core..")
@@ -39,7 +39,7 @@ print(f"[VOICEVOX] successfully loaded! running on {'gpu' if core.is_gpu_mode el
 
 
 def play_voice(device_id):
-    data, fs = sf.read(VOICEVOX_WAV_PATH, dtype='float32')
+    data, fs = sf.read(TTS_WAV_PATH, dtype='float32')
 
     if INGAME_PUSH_TO_TALK_KEY:
         keyboard.press(INGAME_PUSH_TO_TALK_KEY)
@@ -91,10 +91,10 @@ def speak_jp(sentence: str):
     wav = core.synthesis(audio_query, VOICE_ID)
     logger.debug(f"synthesis took: {time.time() - start}")
 
-    VOICEVOX_WAV_PATH.write_bytes(wav)
+    TTS_WAV_PATH.write_bytes(wav)
     logger.debug(f"wrote to wav file took: {time.time() - start}")
 
-    play_voice(SPEAKERS_INPUT_ID)
+    play_voice(CABLE_INPUT_ID)
 
     # # play voice to app mic input and speakers/headphones
     # threads = [
