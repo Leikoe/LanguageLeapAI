@@ -14,10 +14,11 @@ OPEN_JTALK_DICT_DIR = getenv('OPEN_JTALK_DICT_DIR')
 VOICE_ID = int(getenv('VOICE_ID'))
 TTS_WAV_PATH = Path(__file__).resolve(
 ).parent.parent / 'audio' / r'tts.wav'
+VOICEVOX_ACCELERATION_MODE = getenv("VOICEVOX_ACCELERATION_MODE", "CPU")
 
 print(f"[VOICEVOX] loading up voicevox core..")
 core = VoicevoxCore(
-    acceleration_mode="CPU", open_jtalk_dict_dir=OPEN_JTALK_DICT_DIR
+    acceleration_mode=VOICEVOX_ACCELERATION_MODE, open_jtalk_dict_dir=OPEN_JTALK_DICT_DIR
 )
 core.load_model(VOICE_ID)
 print(f"[VOICEVOX] successfully loaded! running on {'gpu' if core.is_gpu_mode else 'cpu'}")
