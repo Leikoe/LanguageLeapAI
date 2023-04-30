@@ -104,11 +104,7 @@ python install -r requirements.txt
 
 ## Usage
 
-To run **LanguageLeapAI**, you need to first run WhisperAI and Voicevox. They can either be run via Docker or using Google Colab.
-
-### Python Program
-
-Run these commands in the [src/](src) folder.
+Run these commands in the `LanguageLeapAI` folder.
 
 To run the Audio Subtitler:
 
