@@ -82,7 +82,8 @@ def move_files(source_dir, target_dir):
             shutil.move(source_path, target_path)
 
 
-voicevox_plugin_dir = Path(Path.cwd() / "Plugins" / "voicevox_plugin")
+voicevox_plugin_dir = Path(Path(__file__).resolve(
+).parent / "Plugins" / "voicevox_plugin")
 os.makedirs(voicevox_plugin_dir, exist_ok=True)
 
 voicevox_core_python_repository = {
