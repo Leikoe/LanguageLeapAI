@@ -205,6 +205,9 @@ open_jtalk_dict_file = {
     "path": "open_jtalk_dic_utf_8-1.11"
 }
 
+
+print(f"[VOICEVOX] loading up voicevox core..")
+
 core = None
 acceleration_mode = VOICEVOX_ACCELERATION_MODE
 voicevox_core_module = None
@@ -262,6 +265,7 @@ core = voicevox_core_module.VoicevoxCore(
 )
 
 core.load_model(VOICE_ID)
+print(f"[VOICEVOX] successfully loaded! running on {'gpu' if core.is_gpu_mode else 'cpu'}")
 
 def tts_generate_wav_jp(sentence: str):
     start = time.time()

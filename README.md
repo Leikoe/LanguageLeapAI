@@ -92,6 +92,7 @@ Setting up **LanguageLeapAI** requires 3 crucial steps, so don't miss out on any
 3. Install python requirements
 
 ```shell
+pip install --force-reinstall "faster-whisper @ https://github.com/guillaumekln/faster-whisper/archive/refs/heads/master.tar.gz"
 python install -r requirements.txt
 ```
 
