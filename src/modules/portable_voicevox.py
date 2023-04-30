@@ -279,7 +279,7 @@ def tts_generate_wav_jp(sentence: str):
     start = time.time()
 
     logger.debug("querying voicevox")
-    audio_query = core.audio_query(sentence, 4)
+    audio_query = core.audio_query(sentence, VOICE_ID)
     audio_query.output_stereo = True
     logger.debug(f"querying took: {time.time() - start}")
 
