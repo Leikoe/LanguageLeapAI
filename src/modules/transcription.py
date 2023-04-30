@@ -14,7 +14,7 @@ SAMPLE_EN_FILEPATH = Path(__file__).resolve(
 ).parent.parent / 'audio' / 'samples' / 'english_speech_sample.wav'
 
 print(f"[WHISPER] loading up {WHISPER_MODEL} whisper model..")
-model = WhisperModel(WHISPER_MODEL, device="cuda" if torch.cuda.is_available() else "cpu", compute_type="int8")
+model = WhisperModel(WHISPER_MODEL, device="cuda" if torch.cuda.is_available() else "cpu", compute_type="float16" if torch.cuda.is_available() else "int8")
 print(f"[WHISPER] successfully loaded! running on {model.model.device}")
 
 
