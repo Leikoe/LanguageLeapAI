@@ -15,6 +15,9 @@ SAMPLE_EN_FILEPATH = Path(__file__).resolve(
 
 print(f"[WHISPER] loading up {WHISPER_MODEL} whisper model..")
 model = WhisperModel(WHISPER_MODEL, device="cuda" if torch.cuda.is_available() else "cpu", compute_type="float16" if torch.cuda.is_available() else "int8")
+segments, _ = model.transcribe(str(SAMPLE_EN_FILEPATH.resolve()))
+_ = list(segments)
+del segments
 print(f"[WHISPER] successfully loaded! running on {model.model.device}")
 
 
