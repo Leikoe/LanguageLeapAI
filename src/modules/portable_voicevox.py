@@ -7,8 +7,10 @@
 import sys
 from importlib import util
 
-from pathlib import Path
 import os
+
+import numpy as np
+
 import downloader
 import tarfile
 import zipfile
@@ -258,9 +260,16 @@ core = voicevox_core_module.VoicevoxCore(
     open_jtalk_dict_dir=str(open_jtalk_dict_path.resolve())
 )
 
+core.load_model(VOICE_ID)
 
 def tts_generate_wav_jp(sentence: str):
     start = time.time()
+
+    if len(sentence.strip()) == 0:
+        logger.debug("empty sentence")
+        wav = np.zeros(0).astype(np.int16)
+        TTS_WAV_PATH.write_bytes(wav)
+        return
 
     logger.debug("querying voicevox")
     audio_query = core.audio_query(sentence, VOICE_ID)
