@@ -11,7 +11,7 @@ load_dotenv()
 # only import voicevox's speak function when translating to japanese
 TARGET_LANGUAGE_CODE = getenv('TARGET_LANGUAGE_CODE')
 if TARGET_LANGUAGE_CODE == 'ja':
-    from .voicevox import tts_generate_wav_jp
+    from .portable_voicevox import tts_generate_wav_jp
 else:
     from .tts_multi import tts_generate_wav_multi as speak_multi
 
