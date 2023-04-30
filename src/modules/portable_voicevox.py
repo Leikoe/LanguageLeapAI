@@ -202,17 +202,9 @@ open_jtalk_dict_file = {
     "path": "open_jtalk_dic_utf_8-1.11"
 }
 
-pydantic_dependency_module = {
-    "url": "https://files.pythonhosted.org/packages/8a/64/db1aafc37fab0dad89e0a27f120a18f2316fca704e9f95096ade47b933ac/pydantic-1.10.7-cp310-cp310-win_amd64.whl",
-    "sha256": "a7cd2251439988b413cb0a985c4ed82b6c6aac382dbaff53ae03c4b23a70e80a",
-    "path": "pydantic"
-}
-
 core = None
-sample_rate = 16000
 acceleration_mode = VOICEVOX_ACCELERATION_MODE
 voicevox_core_module = None
-previous_speaker = None
 
 os.makedirs(Path(voicevox_plugin_dir / acceleration_mode), exist_ok=True)
 
@@ -248,14 +240,6 @@ if not Path(open_jtalk_dict_path / "sys.dic").is_file():
     extract_tar_gz(str(voicevox_plugin_dir / os.path.basename(open_jtalk_dict_file["url"])),
                    str(voicevox_plugin_dir.resolve()))
 
-# # load the pydantic module
-# if not Path(voicevox_plugin_dir / "pydantic" / "__init__.py").is_file():
-#     downloader.download_thread(pydantic_dependency_module["url"], str(voicevox_plugin_dir.resolve()),
-#                                pydantic_dependency_module["sha256"])
-# extract_zip(str(voicevox_plugin_dir / os.path.basename(pydantic_dependency_module["url"])),
-#             str(voicevox_plugin_dir.resolve()))
-#
-# pydantic = load_module(str(Path(voicevox_plugin_dir / pydantic_dependency_module["path"]).resolve()))
 
 # load the voicevox_core module
 if voicevox_core_module is None:
