@@ -11,7 +11,7 @@ import os
 
 import numpy as np
 
-import downloader
+from .downloader import download_thread
 import tarfile
 import zipfile
 import shutil
@@ -211,7 +211,7 @@ voicevox_core_module = None
 os.makedirs(Path(voicevox_plugin_dir / acceleration_mode), exist_ok=True)
 
 if not Path(voicevox_plugin_dir / acceleration_mode / "voicevox_core" / "__init__.py").is_file():
-    downloader.download_thread(voicevox_core_python_repository[OS][ARCH][acceleration_mode]["url"],
+    download_thread(voicevox_core_python_repository[OS][ARCH][acceleration_mode]["url"],
                                str(Path(voicevox_plugin_dir / acceleration_mode).resolve()),
                                voicevox_core_python_repository[OS][ARCH][acceleration_mode]["sha256"])
     extract_zip(str(Path(voicevox_plugin_dir / acceleration_mode / os.path.basename(
@@ -219,7 +219,7 @@ if not Path(voicevox_plugin_dir / acceleration_mode / "voicevox_core" / "__init_
                 str(Path(voicevox_plugin_dir / acceleration_mode).resolve()))
 
 # if not Path(voicevox_plugin_dir / acceleration_mode / "voicevox_core" / "voicevox_core.lib").is_file():
-    downloader.download_thread(voicevox_core_dll_repository[OS][ARCH][acceleration_mode]["url"],
+    download_thread(voicevox_core_dll_repository[OS][ARCH][acceleration_mode]["url"],
                                str(Path(voicevox_plugin_dir / acceleration_mode).resolve()),
                                voicevox_core_dll_repository[OS][ARCH][acceleration_mode]["sha256"])
     extract_zip(str(Path(voicevox_plugin_dir / acceleration_mode / os.path.basename(
@@ -237,7 +237,7 @@ if not Path(voicevox_plugin_dir / acceleration_mode / "voicevox_core" / "__init_
 
 open_jtalk_dict_path = Path(voicevox_plugin_dir / open_jtalk_dict_file["path"])
 if not Path(open_jtalk_dict_path / "sys.dic").is_file():
-    downloader.download_thread(open_jtalk_dict_file["url"], str(voicevox_plugin_dir.resolve()),
+    download_thread(open_jtalk_dict_file["url"], str(voicevox_plugin_dir.resolve()),
                                open_jtalk_dict_file["sha256"])
     extract_tar_gz(str(voicevox_plugin_dir / os.path.basename(open_jtalk_dict_file["url"])),
                    str(voicevox_plugin_dir.resolve()))
