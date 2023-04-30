@@ -1,7 +1,9 @@
 from os import getenv
 from pathlib import Path
-import whisper
+import torch.cuda
+from faster_whisper import WhisperModel
 from dotenv import load_dotenv
+
 
 load_dotenv()
 
@@ -12,13 +14,14 @@ SAMPLE_EN_FILEPATH = Path(__file__).resolve(
 ).parent.parent / 'audio' / 'samples' / 'english_speech_sample.wav'
 
 print(f"[WHISPER] loading up {WHISPER_MODEL} whisper model..")
-whisper_model = whisper.load_model(WHISPER_MODEL)
-whisper_model.transcribe(str(SAMPLE_EN_FILEPATH.resolve()), fp16=False if whisper_model.device == 'cpu' else None)
-print(f"[WHISPER] successfully loaded! running on {whisper_model.device}")
+model = WhisperModel(WHISPER_MODEL, device="cuda" if torch.cuda.is_available() else "cpu", compute_type="int8")
+print(f"[WHISPER] successfully loaded! running on {model.model.device}")
 
 
 def transcribe(filepath):
-    return whisper_model.transcribe(filepath, fp16=False if whisper_model.device == 'cpu' else None)
+    segments, info = model.transcribe(filepath)
+    # segments = list(segments)
+    return {"text": "".join(map(lambda x: x.text, segments)), "language": info.language}
 
 
 if __name__ == '__main__':
